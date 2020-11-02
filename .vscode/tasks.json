@@ -11,9 +11,7 @@
                 "-g",
                 "${file}",
                 "-o",
-                "${fileDirname}\\a.out",
-                "-D",
-                "LOCAL_PROJECT"
+                "${fileDirname}\\a.out"
             ],
             "options": {
                 "cwd": "C:\\MinGW\\bin"
@@ -23,6 +21,47 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        },
+        {
+            "type": "shell",
+            "label": "linux g++ build active file",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "/home/shubham/CodingPractice/vsCode/binaries/${fileBasenameNoExtension}",
+                "-D",
+                "LOCAL_PROJECT"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "type": "shell",
+            "label": "C/C++: g++ build active file",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
         }
     ]
 }
