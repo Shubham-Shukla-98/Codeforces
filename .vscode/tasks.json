@@ -27,6 +27,7 @@
             "label": "linux g++ build active file",
             "command": "/usr/bin/g++",
             "args": [
+                "-std=c++17",
                 "-g",
                 "${file}",
                 "-o",
