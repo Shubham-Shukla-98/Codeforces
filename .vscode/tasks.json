@@ -33,7 +33,7 @@
                 "-o",
                 "/home/shubham/CodingPractice/vsCode/binaries/${fileBasenameNoExtension}",
                 "-D",
-                "LOCAL_PROJECT"
+                "LOCAL_PROJECT_CC"
             ],
             "options": {
                 "cwd": "/usr/bin"
