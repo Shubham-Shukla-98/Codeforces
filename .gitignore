@@ -2,3 +2,8 @@ a.out
 .cph/*
 output.txt
 input.txt
+.vscode/tasks.json
+.vscode/settings.json
+output.txt
+input.txt
+a.out
