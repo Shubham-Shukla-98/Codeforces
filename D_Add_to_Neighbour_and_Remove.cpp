@@ -31,31 +31,70 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
+
 void solve(int case_num)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
+    int n;  cin >> n;
+    vi arr(n);
+    rep(n)  cin >> arr[i];
+    int mx = 0;
+    for(int i : arr)    mx = max(mx, i);
+    vi tmp = arr;
+    int ops = 0;
+    for(int i = 0; i < n; i++)
+    {
+        if(arr[i] == mx or arr[i] == 0)  continue;
+        int j = i+1;
+        while(arr[i] < mx and j < n)
+        {
+            if(arr[j] != 0)
+            {
+                arr[i] += arr[j];
+                arr[j] = 0;
+                ops++;
+            }
+            j++;
+        }
+        if(arr[i] > mx)
+        {
+            mx = arr[i];
+            i = -1;
+        }
+        else if(arr[i] < mx)
+        {
+            ops = n-1;
+            break;
+        }
+    }
+    arr = tmp;
+    int lops = 0;
 
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    for(int i = n-1; i >= 0; i--)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        if(arr[i] == mx or arr[i] == 0)  continue;
+        int j = i-1;
+        while(arr[i] < mx and j >= 0)
+        {
+            if(arr[j] != 0)
+            {
+                arr[i] += arr[j];
+                arr[j] = 0;
+                lops++;
+            }
+            j--;
+        }
+        if(arr[i] > mx)
+        {
+            mx = arr[i];
+            i = n;
+        }
+        else if(arr[i] < mx)
+        {
+            lops = n-1;
+            break;
+        }
     }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
-    {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
-    }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
+    cout << min(ops, lops) << endl;
 }
 
 int main() 

@@ -31,31 +31,57 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
+
 void solve(int case_num)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
-
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    int n;  cin >> n;
+    vector<string> grid(n);
+    rep(n)  cin >> grid[i];
+    vi left(10, n), right(10, -1), up(10, n), down(10, -1);
+    vi lefty(10, n), righty(10, -1), upy(10, n), downy(10, -1);
+    
+    for(char c = '0'; c <= '9'; c++)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        for(int i = 0; i < n; i++)
+        {
+            for(int j = 0; j < n; j++)
+            {
+                if(grid[i][j] == c)
+                {
+                    if(left[c-'0'] > i){
+                        left[c-'0'] = i;
+                        lefty[c-'0'] = j;
+                    }
+                    if(right[c-'0'] < i){
+                        right[c-'0'] = i;
+                        righty[c-'0'] = j;
+                    }
+                    if(up[c-'0'] > j){
+                        up[c-'0'] = j;
+                        upy[c-'0'] = i;
+                    }
+                    if(down[c-'0'] < j){
+                        down[c-'0'] = j;
+                        downy[c-'0'] = i;
+                    }
+                }
+            }
+        }
     }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
+    n--;
+    for(int i = 0; i < 10; i++)
     {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
+        int ans = 0;
+        if(right[i] == -1)
+        {
+            cout << "0 ";
+            continue;
+        }
+        ans = max((right[i] - left[i]) * max(max(n - righty[i], righty[i]), max(n - lefty[i], lefty[i])),
+         (down[i] - up[i]) * max(max(n - upy[i], upy[i]), max(n-downy[i], downy[i])));
+        cout << ans << " ";
     }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
+    cout << endl;
 }
 
 int main() 

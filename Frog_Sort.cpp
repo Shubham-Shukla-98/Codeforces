@@ -33,29 +33,25 @@ const int mod = 1e9 + 7;
 
 void solve(int case_num)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
-
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    int n;
+    cin >> n;
+    vi arr(n+1), moves(n+1);
+    rep(n)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        int t;
+        cin >> t;
+        arr[t] = i;
+    }
+    rep(n)
+    {
+        int t;
+        cin >> t;
+        moves[i] = t;
     }
 
-    for(int i = n - 1 - k; i >= p-1; i--)
-    {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
-    }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
+    int lastPos = 0;
+    rep(n)  if(arr[i] == 1) lastPos = i;
+
 }
 
 int main() 

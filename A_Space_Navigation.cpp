@@ -31,34 +31,34 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
+
 void solve(int case_num)
 {
-    int n, p, k, x, y;
+    int x, y;
+    cin >> x >> y;
     string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
-
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    cin >> str;
+    int l,r,u,d;
+    l = r = u = d = 0;
+    for(char c : str)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        if(c == 'L')    l++;
+        if(c == 'R')    r++;
+        if(c == 'U')    u++;
+        if(c == 'D')    d++;
     }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
-    {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
-    }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
+    bool canx = false, cany = false;
+    if(x == 0)  canx = true;
+    if(y == 0)  cany = true;
+    if(x > 0 and x <= r)    canx = true;
+    if(x < 0 and -x <= l)   canx = true;
+    if(y > 0 and y <= u)    cany = true;
+    if(y < 0 and -y <= d)   cany = true;
+    if(canx and cany)   cout << "YES" <<endl;
+    else cout << "NO" <<endl;
 }
 
-int main() 
+int main()
 {
     #ifdef LOCAL_PROJECT
     freopen("/home/shubham/CodingPractice/vsCode/input.txt", "r", stdin);

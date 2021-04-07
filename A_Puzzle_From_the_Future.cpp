@@ -31,29 +31,29 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
+
 void solve(int case_num)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
-
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    int n;
+    string b;
+    cin >> n >> b;
+    string ans = b;
+    ans[0] = '1';
+    int i = 1;
+    char prev = ( b[0] == '0' ) ? '1' : '2';
+    for(char c : b)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
-    }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
-    {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
-    }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
+        if(c == prev)
+        {
+            ans[i] = '1';
+            prev = ( c == '0' ) ? '1' : '2';
+        }
+        else
+        {
+            ans[i] = '0';
+            prev = c;
+        }
+        i++;
     }
     cout << ans << endl;
 }

@@ -31,31 +31,35 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
+
 void solve(int case_num)
 {
-    int n, p, k, x, y;
+    unordered_set<string> with, without;
+    int n;
+    cin >> n;
     string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
-
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    rep(n)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
-    }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
+        cin >> str;
+        if(str[0] == '!')
+        {
+            with.insert(str.substr(1));
+        }
+        else
+        {
+            without.insert(str);
+        }
+    }    
+    // if(set_intersection(with.begin(), with,end(), without.begin(), without.end(), ))
+    for(auto it = with.begin(); it != with.end(); it++)
     {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
+        if(without.find(*it) != without.end())
+        {
+            cout << *it << endl;
+            return;
+        }
     }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
+    cout << "satisfiable" << endl;
 }
 
 int main() 
@@ -72,7 +76,7 @@ int main()
     cin.tie(0);
 
     int cases = 1;
-    cin>>cases;
+    // cin>>cases;
     forn(i,0,cases)
     {
         solve(i);

@@ -27,35 +27,34 @@ const int mod = 1e9 + 7;
 
 #define mad(a,b)    (int)((((ll)a%mod) + ((ll)b%mod))%mod);
 
-//template<typename...T>void input(T &...args) {((cin >> args), ...);}
-//template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
-//template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
+
 
 void solve(int case_num)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
+    int n, votes = 0;
+    cin >> n;
+    vi sum(n, 0);
+    vvi arr(n, vi(3));
+    rep(n)
+    {
+        cin >> arr[i][1] >> arr[i][2];
+        arr[i][0] = arr[i][2] + 2*arr[i][1];
+        votes += arr[i][1];
+    }
+    int t = 0, count = 0;
+    sortr(arr);
 
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    for(auto vv : arr)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        t += (vv[0] - vv[1]);
+        votes -= vv[1];
+        count++;
+        if(t > votes)
+        {
+            cout << count << endl;
+            break;
+        }
     }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
-    {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
-    }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
 }
 
 int main() 
@@ -72,7 +71,7 @@ int main()
     cin.tie(0);
 
     int cases = 1;
-    cin>>cases;
+    // cin>>cases;
     forn(i,0,cases)
     {
         solve(i);

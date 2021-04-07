@@ -31,31 +31,31 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
-void solve(int case_num)
+
+int solve(int case_num)
 {
-    int n, p, k, x, y;
+    int x, y;
+    cin >> x >> y;
     string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
-
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    cin >> str;
+    char prev = '?';
+    int ans = 0;
+    for(char c : str)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        if(c == '?')    continue;
+        else if(c == prev)   continue;
+        else
+        {
+            if(prev == 'J')
+                ans += y;
+            else if(prev == 'C')
+                ans+=x;
+            else
+                prev = c;
+        }
+        prev = c;
     }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
-    {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
-    }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
+    return ans;
 }
 
 int main() 
@@ -75,7 +75,7 @@ int main()
     cin>>cases;
     forn(i,0,cases)
     {
-        solve(i);
+        cout << "Case #"<<i+1<<": "<<solve(i)<<endl;
     }
     return 0;
 }

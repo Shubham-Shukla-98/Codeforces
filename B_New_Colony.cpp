@@ -22,77 +22,52 @@ typedef vector<pair<int,int>> vpi;
 
 const int INF = 1e6 + 5;
 const int mod = 1e9 + 7;
+// int 2 * 1e9
+// long long 9 * 1e18
 
 #define mad(a,b)    (int)((((ll)a%mod) + ((ll)b%mod))%mod);
 
-void ss(int c)
+//template<typename...T>void input(T &...args) {((cin >> args), ...);}
+//template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
+//template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
+
+
+void solve(int case_num)
 {
-    int n, x;
-    cin >> n >> x;
+    int n, k;
+    cin >> n >> k;
     vi arr(n);
     rep(n)  cin >> arr[i];
-    vector<bool> del(32, false);
-    vi cnt(32, 0);
-    int i = 0;
-    bool safe = false;
-    for(; i < n-1 and x > 0; i++)
+    int start = arr[0], ps = 0;
+    int cn = 0;
+    while(k)
     {
-        for(int j = 31; j >= 0 and x > 0; j--)
+        while(ps + 1 < n and arr[ps] >= arr[ps+1])  ps++;
+
+        if(ps < n)
         {
-            if(arr[i] & (1 << j))
+            if(arr[ps] < arr[ps+1])
             {
-                cnt[j]++;
-                arr[i] ^= (1 << j);
-                if(del[j])
+                k--;
+                arr[ps]++;
+                if(k > ps)
                 {
-                    del[j] = false;
+                    k-=ps;
                 }
-                else
-                {
-                    // if(j > 0)   safe = true;
-                    del[j] = true;
-                    x--;
+                else{
+                    cout << ps - k << endl;
+                    return;
                 }
             }
         }
-    }
-
-    for(int j = 31; j >= 0; j--)
-    {
-        if(cnt[j] >= 3 and cnt[j] < n)  safe = true;    //IMP: critical condition
-        if(del[j])
-        {
-            int tmp = n-1;
-            for(int it = 0; it < n-1; it++)
-            {
-                if(arr[it] & (1 << j))
-                {
-                    tmp = it;
-                    break;
-                }
-            }
-            arr[tmp] ^= (1<<j);
-            del[j] = false;
+        else{
+            cout << -1 << endl;
+            return;
         }
-    }
-
-    if(x % 2 == 0 or safe)
-    {
-        rep(n)  cout << arr[i] << " ";
-        cout << endl;
-        return;
-    }
-    else
-    {
-        arr[n-2] = 1;
-        arr[n-1] ^= 1;
-        rep(n)  cout << arr[i] << " ";
-        cout << endl;
-        return;
-    }
+    }    
 }
 
-int main()
+int main() 
 {
     #ifdef LOCAL_PROJECT
     freopen("/home/shubham/CodingPractice/vsCode/input.txt", "r", stdin);
@@ -102,7 +77,6 @@ int main()
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
     #endif
-    
     ios::sync_with_stdio(false);
     cin.tie(0);
 
@@ -110,7 +84,7 @@ int main()
     cin>>cases;
     forn(i,0,cases)
     {
-        ss(i);
+        solve(i);
     }
     return 0;
 }

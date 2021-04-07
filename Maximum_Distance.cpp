@@ -31,31 +31,37 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
+
 void solve(int case_num)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
+    int n;
+    cin >> n;
+    vi arr(n);
+    rep(n)  cin >> arr[i];
 
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    unordered_map<int, int> left, right;
+    rep(n)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        if(left.find(arr[i]) == left.end())
+        {
+            left[arr[i]] = i+1;
+        }
+        right[arr[i]] = i+1;
     }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
+    int q;
+    cin >> q;
+    while(q--)
     {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
+        int a,b;
+        cin >> a >> b;
+        if(left[a] == 0 or left[b] == 0)
+        {
+            cout << -1 << endl;
+            continue;
+        }
+        int ans = max(abs(left[a] - right[b]), abs(left[b] - right[a]));
+        cout << ans << endl;
     }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
 }
 
 int main() 
@@ -72,7 +78,7 @@ int main()
     cin.tie(0);
 
     int cases = 1;
-    cin>>cases;
+    // cin>>cases;
     forn(i,0,cases)
     {
         solve(i);

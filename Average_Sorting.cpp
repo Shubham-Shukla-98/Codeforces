@@ -33,32 +33,71 @@ const int mod = 1e9 + 7;
 
 void solve(int case_num)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
-
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    int n;
+    cin >> n;
+    vi arr(n);
+    rep(n)  cin >> arr[i];
+    vi left(n,0), right(n,0);
+    left[0] = arr[0];
+    right[n-1] = arr[n-1];
+    int minimum = left[0];
+    int maximum = left[0];
+    int gx = 0;
+    int gm = 0;
+    for(int i = 1; i < n; i++)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        left[i] = max(left[i-1], arr[i]);
+        if(minimum >= left[i])
+        {
+            minimum = left[i];
+            gm = i;
+        }
+        if(maximum <= left[i])
+        {
+            maximum = left[i];
+            gx = i;
+        }
+    }
+    for(int j = n-2; j>=0; j--)
+    {
+        right[j] = max(right[j+1], arr[j]);
+    }
+    for(int i = 0; i < n; i++)
+    {
+        if(left[i] > right[i])
+        {
+            cout << "No" << endl;
+            return;
+        }
     }
 
-    for(int i = n - 1 - k; i >= p-1; i--)
-    {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
-    }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
+    if(gx < gm || minimum == maximum)
+        cout << "No" << endl;
+    else
+        cout << "Yes" << endl;
+
+    // for(int i = 0; i < n; i++)
+    // {
+
+    // }
+
+
+    // int minimum = arr[0];
+    // int maximum = arr[0];
+    // for(int i = 1; i < n; i++)
+    // {
+    //     minimum = min(minimum, arr[i]);
+    //     maximum = max(maximum, arr[i]);
+    // }
+    // if(arr[n-1] < maximum || minimum == maximum)
+    //     cout << "No" << endl;
+    // else
+    //     cout << "Yes" << endl;
 }
 
-int main() 
+// 8 6 7 5 4 3 2 1
+
+int main()
 {
     #ifdef LOCAL_PROJECT
     freopen("/home/shubham/CodingPractice/vsCode/input.txt", "r", stdin);

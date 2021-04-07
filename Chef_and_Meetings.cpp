@@ -31,31 +31,46 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
+
+int getTime()
+{
+    string time, m;
+    cin >> time >> m;
+    string hr = time.substr(0,2);
+    string min = time.substr(3);
+    int ret = stoi(hr);
+    if(hr == "12")
+    {
+        if(m == "AM")   ret = 0;
+        else    ret = 12;
+    }
+    else if(m == "PM")   ret += 12;
+    // }
+    // if(m == "AM" and hr == "12")    ret = 0;
+    // if(m == "PM" and hr == "12")    ret = 12;
+    ret*=60;
+    ret += stoi(min);
+    // cerr << ret << endl;
+    return ret;
+}
+
 void solve(int case_num)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
-
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    int meet = getTime();
+    int n;  cin >> n;
+    rep(n)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        int l = getTime();
+        int r = getTime();
+        if(l <= meet and meet <= r)
+        {
+            cout << "1";
+        }
+        else{
+            cout << "0";
+        }
     }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
-    {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
-    }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
+    cout << endl;
 }
 
 int main() 

@@ -31,30 +31,59 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
-void solve(int case_num)
+
+void solve(int c)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
-
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    int n;
+    cin >> n;
+    vi arr(n);
+    rep(n)  cin >> arr[i];
+    vi cost(n, 0), savings(n, 0);
+    for(int i = n-1; i > 0; i--)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        cost[i] = abs(arr[i] - arr[i-1]);
     }
 
-    for(int i = n - 1 - k; i >= p-1; i--)
+}
+
+void solve1(int case_num)
+{
+    int n;
+    cin >> n;
+    vi arr(n);
+    rep(n)  cin >> arr[i];
+    ll diff = 0, change = n;
+    vl cost(n, 0);
+    // cost[0] = abs(arr[0] - arr[1]);
+    for(int i = 0; i < n-1; i++)
     {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
+        cost[i] = /*abs(arr[i] - arr[i-1]) + */abs(arr[i] - arr[i+1]);
     }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
+    // cost[n-1] = abs(arr[n-1] - arr[n-2]);
+    
+    for(int i = 0; i < n-1; i++)
     {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
+        // cerr << cost[i] << " ";
+        if(diff < cost[i])
+        {
+            diff = cost[i];
+            change = abs(arr[i+1] - arr[i-1]);
+        }
     }
+    // cerr << endl;
+    // // int prev = (change > 0) ? abs(arr[change] - arr[change-1]): INT_MAX;
+    // // int next = (change < n-1) ? abs(arr[change] - arr[change+1]): INT_MAX;
+    // // if(change == n); 
+    // // else if(prev > next) arr[change] = arr[change + 1];
+    // // else if(prev < next)   arr[change] = arr[change - 1];
+    // arr[change] = arr[change+1];
+    // cerr << "changed " << change << " to " << arr[change] << endl;
+    ll ans = 0;
+    for(int i = n-1; i > 0; i--)
+    {
+        ans += abs(arr[i] - arr[i-1]);
+    }
+    ans -= diff;
     cout << ans << endl;
 }
 

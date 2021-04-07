@@ -31,31 +31,49 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
+vi arr, odd, even;
+vector<vector<int>> dp;
+
+int game(int i, int j, bool alice)
+{
+    if(i <= 0 and j <= 0)   return 0;
+    if(alice)
+    {
+        return max(
+            game(i-1, j, false),
+            (j > 0) ? game(i, j-1, false) + even[j-1] : INT_MIN
+        );
+    }
+    else
+    {
+        return min(
+            game(i, j-1, true),
+            (i > 0) ? game(i-1, j, true) + odd[i-1] : INT_MAX
+        );
+    }
+}
+
 void solve(int case_num)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
+    int n;
+    cin >> n;
+    rep(n)  cin >> arr[i];
+    arr.resize(n);
+    odd.resize(n);
+    even.resize(n);
 
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    for(int i : arr)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        if(i&1) odd.push_back(i);
+        else    even.push_back(i);
     }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
-    {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
-    }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
+    sortn(odd);
+    sortn(even);
+    dp.resize(odd.size() + 1, vi(even.size() + 1, INT_MIN));
+    int res = game(odd.size(), even.size(), true);
+    if(res > 0) cout <<"Alice" << endl;
+    else if(res == 0)   cout << "Tie" <<endl;
+    else cout << "Bob" << endl;
 }
 
 int main() 

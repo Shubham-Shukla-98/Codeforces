@@ -31,31 +31,47 @@ const int mod = 1e9 + 7;
 //template<typename...T>void print(T &&...args) {((cout << args << endl), ...);}
 //template<typename...T>void deb(T &&...args) {cout << "~~ "; ((cout << args << " "), ...); cout << endl;}
 
+
 void solve(int case_num)
 {
-    int n, p, k, x, y;
-    string str;
-    cin >> n >> p >> k >> str >> y >> x;
-    // clear(dp);  
-    vi cost(n+1, 0);
-
-    for(int j = n-1, u = 0; u < k and j >= p-1; u++, j--)
+    int n; cin >> n;
+    vvi gr(n+1);
+    vvi edges(n+1, vi(2));
+    rep(n-1)
     {
-        cost[j] = (str[j] == '1') ? 0 : 1;
+        int x, y;
+        cin >> x >> y;
+        edges[i+1][0] = x;
+        edges[i+1][1] = y;
+        gr[x].push_back(y);
+        gr[y].push_back(x);
     }
-
-    for(int i = n - 1 - k; i >= p-1; i--)
+    unordered_map<int, int> vals;
+    int query;
+    cin >> query;
+    rep(query)
     {
-        cost[i] = (str[i] == '1') ? 0 : 1;
-        cost[i] += cost[i + k];
+        int t, e, c;
+        cin >> t >> e >> c;
+        int avoid = ((t == 1) ? edges[e][1] : edges[e][0]);
+        int use = ((t == 2) ? edges[e][1] : edges[e][0]);
+        queue<int> q;
+        q.push(use);
+        vector<bool> visited(n+1, false);
+        while(!q.empty())
+        {
+            int s = q.front();
+            q.pop();
+            visited[s] = true;
+            if(vals.find(s) == vals.end())    vals[s] = c;
+            else    vals[s]+=c;
+            for(int ne : gr[s])
+            {
+                if(ne != avoid and !visited[ne]) q.push(ne);
+            }
+        }
     }
-    int ans = INT_MAX;
-    for(int i = p-1; i < n; i++)
-    {
-        int tmp = (i + 1 - p)*x + cost[i]*y;
-        ans = min(ans, tmp);
-    }
-    cout << ans << endl;
+    rep(n)  cout<<vals[i+1]<<endl;
 }
 
 int main() 
@@ -72,7 +88,7 @@ int main()
     cin.tie(0);
 
     int cases = 1;
-    cin>>cases;
+    // cin>>cases;
     forn(i,0,cases)
     {
         solve(i);
