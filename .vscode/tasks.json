@@ -44,6 +44,30 @@
         },
         {
             "type": "shell",
+            "label": "ryzen build",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-std=c++17",
+                "-g",
+                "${file}",
+                "-o",
+                "/home/shukks/binaries/${fileBasenameNoExtension}",
+                "-D",
+                "LOCAL_PROJECT_CC"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "type": "shell",
             "label": "C/C++: g++ build active file",
             "command": "/usr/bin/g++",
             "args": [
